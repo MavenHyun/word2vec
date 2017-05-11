@@ -1,0 +1,41 @@
+<component name="libraryTable">
+  <library name="lucene-analyzers-common-6.5.1">
+    <CLASSES>
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/analysis/common/lucene-analyzers-common-6.5.1.jar!/" />
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/analysis/icu/lucene-analyzers-icu-6.5.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/analyzers-common" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/analyzers-icu" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/analyzers-kuromoji" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/analyzers-morfologik" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/analyzers-phonetic" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/analyzers-smartcn" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/analyzers-stempel" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/analyzers-uima" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/backward-codecs" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/benchmark" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/classification" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/codecs" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/core" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/demo" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/expressions" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/facet" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/grouping" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/highlighter" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/join" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/memory" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/misc" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/queries" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/queryparser" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/replicator" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/sandbox" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/spatial" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/spatial-extras" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/spatial3d" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/suggest" />
+      <root url="file://$APPLICATION_HOME_DIR$/lib/lucene-6.5.1/docs/test-framework" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
