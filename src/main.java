@@ -13,7 +13,7 @@ public class main
     public static void main(String[] args) throws Exception
     {
         word2vec maven = new word2vec(100, 4);
-        maven.tokenize("golf_20.txt");
+        maven.tokenize("text8.txt"); /*any text*/
         maven.train(5000);
         return;
     }

@@ -4,6 +4,10 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.*;
+
+import com.aliasi.tokenizer.*;
+import com.aliasi.tokenizer.TokenizerFactory;
+import org.apache.lucene.analysis.util.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,11 +23,6 @@ import org.python.util.PythonInterpreter;
 import org.python.core.*;
 
 
-
-import com.aliasi.tokenizer.LowerCaseTokenizerFactory;
-import com.aliasi.tokenizer.PorterStemmerTokenizerFactory;
-import com.aliasi.tokenizer.Tokenizer;
-import com.aliasi.tokenizer.TokenizerFactory;
 import org.apache.lucene.analysis.core.KeywordTokenizer;
 
 import org.apache.lucene.analysis.*;
@@ -32,6 +31,7 @@ import org.tartarus.snowball.ext.PorterStemmer;
 
 public class word2vec
 {
+    public TokenizerFactory factory;
 
 
     public int N = 0;
@@ -43,6 +43,7 @@ public class word2vec
     public Map<String, double[]> dict = new HashMap<String, double[]>();
     public ArrayList<String> context_words = new ArrayList<String>();
     public ArrayList<String> training_set = new ArrayList<String>();
+    public ArrayList<String> white_list = new ArrayList<String>();
     public Set<String> stopwords = new HashSet<String>();
 
     public Matrix weight = Matrix.random(V, N);
@@ -52,6 +53,11 @@ public class word2vec
     public Matrix hidden = new Matrix(N,1);
     public Matrix output = new Matrix(V,1);
     public Matrix error = new Matrix(V,1);
+
+
+
+
+
 
     public void tokenize(String file)
     {
@@ -65,7 +71,7 @@ public class word2vec
             {
                 try
                 {
-                    String text = "";
+                    /*This is for web crawling (CNN)
                     parser = Jsoup.connect(line).get();
                     Elements elements = parser.select(".zn-body__paragraph");
                     Element heading = elements.get(1);
@@ -73,31 +79,48 @@ public class word2vec
                     for (int i = 2; i < elements.size(); i++ )
                     {
                         text += elements.get(i).text();
-                    }
-                    StringTokenizer tokens = new StringTokenizer(text.toLowerCase());
-                    Stemmer porter = new Stemmer();
-                    for (int i = 0; i < tokens.countTokens(); i++)
-                    {
-                        String token = tokens.nextToken();
-                        if (!stopwords.contains(token))
-                        {
-                            porter.add(token);
-                            String result = porter.stem();
-                            if (!training_set.contains(result)) training_set.add(result);
-                            porter.clear();
-                        }
-                    }
+                    }*/
 
+
+                    factory = new IndoEuropeanTokenizerFactory();
+                    LowerCaseTokenizerFactory low = new LowerCaseTokenizerFactory(factory);
+                    EnglishStopTokenizerFactory stop = new EnglishStopTokenizerFactory(factory);
+                    PorterStemmerTokenizerFactory stem = new PorterStemmerTokenizerFactory(factory);
+                    String[] text_array = line.split(" ");
+
+                    for (int i = 0; i < 200; i++)
+                    {
+                        try
+                        {
+                            String[] text = Arrays.copyOfRange(text_array, (i * 10000), (i * 10000) + 9999);
+                            String text_tokenize = Arrays.toString(text);
+                            Tokenization tokenization = new Tokenization(text_tokenize, factory);
+                            for (String token : tokenization.tokens())
+                            {
+                                try
+                                {
+                                    String target = stem.modifyToken(stop.modifyToken(low.modifyToken(token)));
+                                    if (!training_set.contains(target))
+                                    {
+                                        training_set.add(target);
+                                        System.out.println(training_set.size());
+                                    }
+                                }
+                                catch (Exception e) { }
+                            }
+                        }
+                        catch (Exception e) {  }
+                    }
                     System.out.print("Parsing Complete!\n");
                 }
-                catch(Exception e) {}
+                catch(Exception e) { }
             }
             V = training_set.size();
             weight = Matrix.random(V, N);
             weight2 = Matrix.random(N, V);
             copy_to_dict();
         }
-        catch(Exception e) {}
+        catch(Exception e) {System.out.println(e);}
     }
 
     word2vec(int feature, int context)
