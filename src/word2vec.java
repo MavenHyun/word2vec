@@ -3,6 +3,7 @@
  */
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import com.aliasi.tokenizer.*;
@@ -37,8 +38,9 @@ public class word2vec
     public int N = 0;
     public int V = 0;
     public int C = 0;
+    public int target = 0;
     public int dict_capacity = 20000; /*10000*/
-    public double learning_rate = 0.88;
+    public double learning_rate = 0.077;
 
     public Map<String, double[]> dict = new HashMap<String, double[]>();
     public ArrayList<String> context_words = new ArrayList<String>();
@@ -88,7 +90,7 @@ public class word2vec
                     PorterStemmerTokenizerFactory stem = new PorterStemmerTokenizerFactory(factory);
                     String[] text_array = line.split(" ");
 
-                    for (int i = 0; i < 200; i++)
+                    for (int i = 0; i < 2000; i++)
                     {
                         try
                         {
@@ -207,7 +209,7 @@ public class word2vec
             operand2 += b.get(i, 0) * b.get(i, 0);
             operand3 += a.get(i, 0) * b.get(i, 0);
         }
-        return operand3 / (Math.sqrt(operand1) + Math.sqrt(operand2));
+        return operand3 / (Math.sqrt(operand1) * Math.sqrt(operand2));
     }
 
     public double update_weights(String actual_word)
@@ -220,25 +222,34 @@ public class word2vec
         for (int i = 0; i < V; i++) {
             scalar += error.get(i, 0);
         }
-        weight = weight.minus((weight2.transpose()).times(1 / (double) C).times(learning_rate).times(scalar));
+        Matrix weight_update = new Matrix(N, 1);
+        Matrix weight_replace = new Matrix(N, 1);
+        weight_update = (weight2.times(error)).times((1 / (double)C) * learning_rate);
+        weight_replace = weight.getMatrix(target, target, 0, N-1);
+        weight_replace = weight_replace.minus(weight_update.transpose());
+        weight.setMatrix(target, target, 0, N-1, weight_replace);
         return cosine_sim(vectorize(actual_word), output);
     }
 
     public void train(int iter)
     {
+        double sum = 0;
         for (int t = 0; t < iter; t++ )
         {
-            double sum = 0;
-            for (int i = 0; i < training_set.size() - C; i++)
+            for (int i = 0; i < V - C + 1; i++)
             {
-                for (int j = 0; j < C + 1; j++)
+                for (int j = 0; j < C; j++)
                 {
-                    if (j != (C / 2) + 1) context_words.add(training_set.get(j));
+                    context_words.add(training_set.get(j));
                 }
-                sum += update_weights(training_set.get(i+2));
+                double index = (double) C;
+                target = (int) Math.ceil(index / 2.0);
+                sum += update_weights(training_set.get(target + i));
+                /*System.out.println(String.format("%10f", sum / V));*/
+                /*System.out.println(training_set.get(target + i) + "\t" + update_weights(training_set.get(target + i)));*/
                 context_words.clear();
             }
-            System.out.println(String.format("%.20f", sum / (training_set.size() - C)));
         }
+        System.out.println(String.format("%10f", sum / V));
     }
 }
