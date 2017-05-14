@@ -56,11 +56,6 @@ public class word2vec
     public Matrix output = new Matrix(V,1);
     public Matrix error = new Matrix(V,1);
 
-
-
-
-
-
     public void tokenize(String file)
     {
         try
@@ -125,10 +120,11 @@ public class word2vec
         catch(Exception e) {System.out.println(e);}
     }
 
-    word2vec(int feature, int context)
+    word2vec(int feature, int context, double learn)
     {
         N = feature;
         C = context;
+        learning_rate = learn;
         try
         {
             FileReader f = new FileReader("stopword.txt");
@@ -244,12 +240,14 @@ public class word2vec
                 }
                 double index = (double) C;
                 target = (int) Math.ceil(index / 2.0);
+                context_words.remove(target);
                 sum += update_weights(training_set.get(target + i));
                 /*System.out.println(String.format("%10f", sum / V));*/
                 /*System.out.println(training_set.get(target + i) + "\t" + update_weights(training_set.get(target + i)));*/
                 context_words.clear();
             }
+            System.out.print(String.format("Average Cosine Similarity: %10f\t", sum / V));
+            System.out.println("V: " + V + " C: " + C + " N: " + N + " Learning Rate: " + learning_rate);
         }
-        System.out.println(String.format("%10f", sum / V));
     }
 }
